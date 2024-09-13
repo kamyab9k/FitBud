@@ -8,52 +8,56 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.fitbud.R
 
-// Set of Material typography styles to start with
-//val Typography = Typography(
-//    bodyLarge = TextStyle(
-//        fontFamily = FontFamily.Default,
-//        fontWeight = FontWeight.Normal,
-//        fontSize = 16.sp,
-//        lineHeight = 24.sp,
-//        letterSpacing = 0.5.sp
-//    )
 val Roboto = FontFamily(
-    Font(R.font.roboto_regular),
-//    Font(R.font.roboto_bold, FontWeight.Bold),
-//Font(R.font.roboto_italic, FontWeight.Italic)
+    Font(R.font.roboto_regular, FontWeight.Normal),
+    Font(R.font.roboto_bold, FontWeight.Bold)
 )
 
-// Define typography using Roboto
 val Typography = Typography(
+    displayLarge = TextStyle(
+        fontFamily = Roboto,
+        fontWeight = FontWeight.Bold,
+        fontSize = 34.sp
+    ),
+    displayMedium = TextStyle(
+        fontFamily = Roboto,
+        fontWeight = FontWeight.Bold,
+        fontSize = 28.sp
+    ),
+    displaySmall = TextStyle(
+        fontFamily = Roboto,
+        fontWeight = FontWeight.Bold,
+        fontSize = 24.sp
+    ),
+    headlineLarge = TextStyle(
+        fontFamily = Roboto,
+        fontWeight = FontWeight.Bold,
+        fontSize = 20.sp
+    ),
+    headlineMedium = TextStyle(
+        fontFamily = Roboto,
+        fontWeight = FontWeight.Bold,
+        fontSize = 18.sp
+    ),
+    headlineSmall = TextStyle(
+        fontFamily = Roboto,
+        fontWeight = FontWeight.Bold,
+        fontSize = 16.sp
+    ),
     bodyLarge = TextStyle(
         fontFamily = Roboto,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp
     ),
-    headlineMedium = TextStyle(
+    bodyMedium = TextStyle(
         fontFamily = Roboto,
-        fontWeight = FontWeight.Bold,
-        fontSize = 28.sp
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
     ),
-    headlineLarge = TextStyle(
+    bodySmall = TextStyle(
         fontFamily = Roboto,
-        fontWeight = FontWeight.Bold,
-        fontSize = 32.sp // Adjust size if needed
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp
     )
 )
-/* Other default text styles to override
-titleLarge = TextStyle(
-    fontFamily = FontFamily.Default,
-    fontWeight = FontWeight.Normal,
-    fontSize = 22.sp,
-    lineHeight = 28.sp,
-    letterSpacing = 0.sp
-),
-labelSmall = TextStyle(
-    fontFamily = FontFamily.Default,
-    fontWeight = FontWeight.Medium,
-    fontSize = 11.sp,
-    lineHeight = 16.sp,
-    letterSpacing = 0.5.sp
-)
-*/
+

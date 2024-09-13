@@ -1,6 +1,9 @@
 package com.example.fitbud.registration.ui
 
-import androidx.compose.foundation.background
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,8 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,11 +24,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,6 +42,7 @@ import com.example.fitbud.ui.theme.Roboto
 @Preview
 @Composable
 fun RegisterScreen() {
+    val context = LocalContext.current
     var username by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -44,74 +52,130 @@ fun RegisterScreen() {
             .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.SpaceBetween // Space between elements
     ) {
+        Column(
+            modifier = Modifier
+                .weight(1f) // Takes up the remaining space
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = stringResource(id = R.string.RegisterTitle),
+                style = MaterialTheme.typography.displaySmall,
+                fontWeight = FontWeight.Bold,
+            )
+
+            Spacer(modifier = Modifier.height(40.dp))
+
+            // Username input
+            OutlinedTextField(
+                value = username,
+                onValueChange = { username = it },
+                label = { Text("Username") },
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Email input
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                label = { Text("Email") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Password input
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text("Password") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+
+            val annotatedString = AnnotatedString.Builder().apply {
+                append("By signing up, you agree to our ")
+                pushStringAnnotation(tag = "URL", annotation = "https://github.com/kamyab9k")
+                withStyle(
+                    style = SpanStyle(
+                        color = Color.Blue,  // Set the color to blue
+                        textDecoration = TextDecoration.Underline
+                    )
+                ) {
+                    append("Terms and Conditions")
+                }
+                pop()
+            }.toAnnotatedString()
+
+            Text(
+                text = annotatedString,
+                style = TextStyle(
+                    fontFamily = Roboto,
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Normal,
+                ),
+                modifier = Modifier.clickable {
+                    // Handle the click event for "Terms"
+                    annotatedString.getStringAnnotations("URL", 0, annotatedString.length)
+                        .firstOrNull()?.let { annotation ->
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(annotation.item))
+                            context.startActivity(intent)
+                        }
+                }
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Register Button
+            Button(
+                onClick = {
+                    // Handle register action here
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp),
+                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                    containerColor = Color.Black,  // Button background color
+                    contentColor = Color.White     // Button text color
+                )
+            ) {
+                Text("Register")
+            }
+        }
+
+        val annotatedStringTwo = AnnotatedString.Builder().apply {
+            append("Already have an account?")
+            withStyle(
+                style = SpanStyle(
+                    textDecoration = TextDecoration.Underline,
+                    color = Color.Blue,
+                )
+            ) {
+                append(" Login")
+            }
+        }.toAnnotatedString()
 
         Text(
-            text = stringResource(id = R.string.RegisterTitle),
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold,
-        )
-
-        Spacer(modifier = Modifier.height(40.dp))
-
-        // Username input
-        TextField(
-            value = username,
-            onValueChange = { username = it },
-            label = { Text("Username") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Email input
-        TextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Email") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Password input
-        TextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Password") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            text = stringResource(id = R.string.Terms),
+            text = annotatedStringTwo,
             style = TextStyle(
                 fontFamily = Roboto,
-                color = colorResource(id = R.color.lightGray2),  // Set the color here
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Normal,
-                )
+                color = Color.Black.copy(alpha = 0.7f), // Set the opacity to 70%
+            ),
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .clickable {
+                    Toast
+                        .makeText(context, "Login screen is shown", Toast.LENGTH_SHORT)
+                        .show()
+                }
         )
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Register Button
-        Button(
-            onClick = {
-                // Handle register action here
-            },
-            modifier = Modifier.fillMaxWidth()
-                .height(48.dp)
-                .background(color= Color.Black),
-            ) {
-            Text("Register")
-        }
     }
 }
-
-
-
-
-

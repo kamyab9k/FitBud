@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">FitBud</string>
+    <string name="RegisterTitle">Create Account</string>
+    <string name="Terms">By clicking the Register button, you agree to the terms</string>
 </resources>
